@@ -1,0 +1,162 @@
+<html>
+    <head>
+        <title>LibreVentas</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- CSS only -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+        <!-- JavaScript Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">LibreVentas</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/listaproductos.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/agregarproducto.html">Agregar producto</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/listaproductos.html">Lista de productos</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">id</th>
+                        <th scope="col">Producto</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Descripción</th>
+                        <th scope="col">Borrar producto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="producto : ${productos}">
+                        <th scope="row">[[*{producto.id}]]</th>
+                        <td>[[*{producto.nombre}]]
+                            <br>
+                            <br>
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:attr="data-bs-target='#exampleModal'+*{producto.id}">
+                                Modificar nombre
+                            </button>
+                            <!-- Modal -->
+                            <div class="modal fade" th:id="*{'exampleModal'+{producto.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Cambiar nombre del producto</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="/cambiarnombre" method="Post">
+                                                <div class="form-group">
+                                                    <!--<label>Id del producto</label>-->
+                                                    <input type="hidden" th:value="*{producto.id}" name="id" class="form-control" >
+                                                    <label>Nombre actual del producto</label>
+                                                    <input type="text" th:value="*{producto.nombre}" name="nombre" class="form-control" disabled="disabled">
+                                                    <label>Ingresar nuevo nombre del producto</label>
+                                                    <input type="text" name="nuevonombreproducto" class="form-control">
+                                                    <br>
+                                                    <button type="submit" class="btn btn-primary">Aceptar</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>[[*{producto.precio}]]
+                            <br>
+                            <br>
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:attr="data-bs-target='#exampleModalPrecio'+*{producto.id}">
+                                Modificar precio
+                            </button>
+                            <!-- Modal -->
+                            <div class="modal fade" th:id="*{'exampleModalPrecio'+{producto.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Cambiar precio (2) del producto</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="/cambiarprecio" method="Post">
+                                                <div class="form-group">
+                                                    <!--<label>Id del producto</label>-->
+                                                    <input type="hidden" th:value="*{producto.id}" name="id" class="form-control" >
+                                                    <label>Precio actual del producto</label>
+                                                    <input type="number" th:value="*{producto.precio}" name="precio" class="form-control" disabled="disabled">
+                                                    <label>Ingresar nuevo precio del producto</label>
+                                                    <input type="number" name="nuevoprecioproducto" class="form-control">
+                                                    <br>
+                                                    <button type="submit" class="btn btn-primary">Aceptar</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>[[*{producto.descripcion}]]
+                            <br>
+                            <br>
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:attr="data-bs-target='#exampleModalDesc'+*{producto.id}">
+                                Modificar descripción
+                            </button>
+                            <!-- Modal -->
+                            <div class="modal fade" th:id="*{'exampleModalDesc'+{producto.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Cambiar descripción del producto</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="/cambiardesc" method="Post">
+                                                <div class="form-group">
+                                                    <!--<label>Id del producto</label>-->
+                                                    <input type="hidden" th:value="*{producto.id}" name="id" class="form-control" >
+                                                    <label>Descripción actual del producto</label>
+                                                    <input type="text" th:value="*{producto.descripcion}" name="descripcion" class="form-control" disabled="disabled">
+                                                    <label>Ingresar nuevo precio del producto</label>
+                                                    <input type="text" name="nuevadescproducto" class="form-control">
+                                                    <br>
+                                                    <button type="submit" class="btn btn-primary">Aceptar</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td><a th:href="@{/borrarproducto/{id}(id=${producto.id})}"
+                               class="btn btn-danger">Borrar</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
