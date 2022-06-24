@@ -1,5 +1,6 @@
 package com.argentina.libreventas.Controladora;
 
+import com.argentina.libreventas.Servicio.ProductoServicio;
 import com.argentina.libreventas.dto.ProductoRepositorio;
 import com.argentina.libreventas.modelo.Producto;
 import java.util.List;
@@ -10,12 +11,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class ControlProducto {
     
     @Autowired
     private ProductoRepositorio productorepositorio;
+    
+    @Autowired
+    private ProductoServicio productoservicio;
     
     @GetMapping("/listaproductos.html")
     public String listarProductos(Model modelo){
@@ -31,15 +36,12 @@ public class ControlProducto {
     
     @PostMapping("/agregarp")
     public String guardarProducto(
+            @RequestParam("archivo") MultipartFile archivo,
             @RequestParam("nombreproducto") String nombre,
             @RequestParam("precioproducto") int precio,
             @RequestParam("descripcionproducto") String descripcion)
     {
-        Producto producto = new Producto();
-        producto.setNombre(nombre);
-        producto.setPrecio(precio);
-        producto.setDescripcion(descripcion);
-        productorepositorio.save(producto);
+        productoservicio.guardarProductoBD(archivo, nombre, descripcion, precio);
         return "redirect:/listaproductos.html";
     }
     

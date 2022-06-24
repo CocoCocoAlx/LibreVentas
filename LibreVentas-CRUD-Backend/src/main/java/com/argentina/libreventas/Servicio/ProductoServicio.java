@@ -16,9 +16,9 @@ public class ProductoServicio {
 
     @Autowired
     private ProductoRepositorio productorepositorio;
-    public void guardarProductoBD(MultipartFile file,String nombre,String descripcion,int precio){
+    public void guardarProductoBD(MultipartFile archivo,String nombre,String descripcion,int precio){
         Producto producto = new Producto();
-        String nombreArchivo = StringUtils.cleanPath(file.getOriginalFilename());
+        String nombreArchivo = StringUtils.cleanPath(archivo.getOriginalFilename());
         if(nombreArchivo.contains("..")){
             System.out.println("No es un archivo válido");
         }
@@ -26,10 +26,11 @@ public class ProductoServicio {
         producto.setPrecio(precio);
         producto.setDescripcion(descripcion);
         try {
-            producto.setImagen(Base64.getEncoder().encodeToString(file.getBytes()));
+            producto.setImagen(Base64.getEncoder().encodeToString(archivo.getBytes()));
         } catch (IOException ex) {
             Logger.getLogger(ProductoServicio.class.getName()).log(Level.SEVERE, null, ex);
         }
+        productorepositorio.save(producto);
 
     }
 
